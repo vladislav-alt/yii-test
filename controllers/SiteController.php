@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Link;
+use yii\web\HttpException;
 
 class SiteController extends Controller
 {
@@ -53,6 +55,25 @@ class SiteController extends Controller
             ],
         ];
     }
+
+
+	/**
+	 * переход по короткой ссылке
+	 *
+	 * @param string $code Код короткой ссылки
+	 *
+	 * @return void
+	 */
+	public function actionView($code)
+	{
+		if($model = Link::findOne(['code' => $code])) {
+			$model->updateCounters(['counter' => 1]);
+
+			return $this->redirect($model->url);
+		}
+		throw new HttpException(404, 'Not found link "' . $code . '"');
+	}
+
 
     /**
      * Displays homepage.
