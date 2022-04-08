@@ -11,7 +11,25 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'components' => [
+	'modules' => [
+		'api' => [
+			'class' => \app\api\Module::class,
+			'modules' => [
+				'v1' => [
+					'class' => \app\api\v1\Module::class,
+				],
+			],
+		],
+	],
+	'components' => [
+		'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+			'rules' => [
+				'api/v1/link/<code:[a-zA-Z0-9_\-]+>' => 'api/v1/link/view',
+				'/<code:[a-zA-Z0-9_\-]+>' => 'site/view',
+			]
+		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 't3rHCfWQF8SmNYawra9HwNcDe36-huIK',
